@@ -17,7 +17,7 @@ public class OBJ_DungeonMap extends Entity {
             type = typeConsumable;
             name = OBJ_NAME;
             value = 3;
-            down1 = setup("/objects/dungeonMap01",GamePanel.TileSize,GamePanel.TileSize);
+            down1 = setup("/objects/DungeonMap01",GamePanel.TileSize,GamePanel.TileSize);
             description ="["+ name +"]"+ "\nAn old map";
             stackable = false;
     

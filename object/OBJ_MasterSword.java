@@ -12,11 +12,11 @@ public class OBJ_MasterSword extends Entity {
         type = typeSword;
         name = OBJ_NAME;
         down1 = setup("/objects/MasterSword", GamePanel.TileSize, GamePanel.TileSize);
-        attackValue = 4;
-        description ="["+ name +"]"+ "\nThe legendary master sword.";
+        attackValue = 5;
+        description ="["+ name +"]"+ "\nThe legendary maste\nsword.";
         setDialogue();
     }
     public void setDialogue() {
-        Dialogues[0][0] = "You pick up the legendary Master Sword!.";
+        Dialogues[0][0] = "You pick up the legendary Master Sword!";
     }
 }

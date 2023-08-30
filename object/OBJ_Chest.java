@@ -38,10 +38,10 @@ public class OBJ_Chest extends Entity{
             opened = true;
         
         Dialogues[0][0] = sb.toString();
-        startDialogue(this, 0);
+        startDialogue(this, 0, false);
       }else{
         Dialogues[1][0] = "Its empty.";
-        startDialogue(this, 1);
+        startDialogue(this, 1, false);
       }
       down1 = image2;
     }

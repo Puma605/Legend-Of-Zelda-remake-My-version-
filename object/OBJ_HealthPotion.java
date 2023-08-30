@@ -28,7 +28,7 @@ public class OBJ_HealthPotion extends Entity{
         Dialogues[0][0] = "You drank a " + name + "!\n Your life has been recovered by " + value;
     }
     public boolean use(Entity entity) {
-        startDialogue(this, 0);
+        startDialogue(this, 0,false);
         entity.life += value;
         if (entity.life > entity.maxLife) 
             entity.life = entity.maxLife;

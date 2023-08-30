@@ -3,6 +3,7 @@ package object;
 
 import entity.Entity;
 import main.GamePanel;
+import quests.TR_QuestOne;
 
 public class OBJ_Key extends Entity {
     public static final String OBJ_NAME = "Key";
@@ -30,12 +31,17 @@ public class OBJ_Key extends Entity {
         int objIndex = getDetected(entity, gp.obj, OBJ_Door.OBJ_NAME);
 
         if (objIndex != 999) {
-            startDialogue(this, 0);
+            startDialogue(this, 0,false);
             gp.playSoundEffect(3);
             gp.obj[gp.currentMap][objIndex] = null;
+
+            //door quest
+            if (gp.currentMap == 0) 
+                TR_QuestOne.doorOpen = true;
+            
             return true;
         }else{
-            startDialogue(this, 1);
+            startDialogue(this, 1,false);
             return false;
         }
     }

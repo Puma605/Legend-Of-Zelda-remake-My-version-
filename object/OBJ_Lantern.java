@@ -12,7 +12,7 @@ public class OBJ_Lantern extends Entity {
         name = OBJ_NAME;
         down1 = setup("/objects/lantern",GamePanel.TileSize,GamePanel.TileSize);
         description ="["+ name +"]"+ "\nEmits light.";
-        price = 150;
+        price = 30;
         lightRadius = 400;
     }
     

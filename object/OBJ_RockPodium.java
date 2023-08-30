@@ -26,7 +26,7 @@ public class OBJ_RockPodium extends Entity {
       }
       @Override
       public void interact() {
-        startDialogue(this, 0);  
+        startDialogue(this, 0,false);  
         gp.aPlacer.setNpc();
       }
   

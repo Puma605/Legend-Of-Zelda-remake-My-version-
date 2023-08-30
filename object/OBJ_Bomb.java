@@ -79,7 +79,7 @@ public class OBJ_Bomb extends Projectile {
   @Override
   public boolean use(Entity entity){
     Dialogues[0][0] = "You put "+ amount + " bombs in the bomb pouch!";
-    startDialogue(this, 0);
+    startDialogue(this, 0,false);
     entity.ammo += amount;
     gp.playSoundEffect(1);
     return true;

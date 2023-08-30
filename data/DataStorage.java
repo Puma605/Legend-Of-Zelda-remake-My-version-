@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 
+
 public class DataStorage implements Serializable {
     //player stats
     int maxLife;
@@ -23,6 +24,16 @@ public class DataStorage implements Serializable {
     ArrayList<Integer> itemQuantity = new ArrayList<>();
     int currentWeaponSlot;
     int currentShieldSlot;
+
+
+    //quests
+    boolean OM_QuestOneComplete;
+    boolean OM_QuestTwoComplete;
+    boolean Ruebs_QuestOneComplete;
+    boolean TR_QuestOneComplete;
+    boolean SLDEAD;
+    String CurrentQuestName;
+    boolean[] ObjectivesComplete = new boolean[10];
 
     //map objects
     String mapObjectNames[][];

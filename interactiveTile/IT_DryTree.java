@@ -18,12 +18,7 @@ public class IT_DryTree extends interactiveTile {
         destructible = true;
     }
     public boolean isCorrectItem(Entity entity) {
-        boolean isCorrectItem = false;
-        if (entity.name == "Explosion") 
-            isCorrectItem = true;
-        
-
-        return isCorrectItem;
+        return true;
     }
     public void playSE() {
         gp.playSoundEffect(7);

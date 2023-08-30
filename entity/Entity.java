@@ -25,7 +25,7 @@ public class Entity {
     attackLeft2, attackRight1, attackRight2, guardUp, guardDown, guardLeft, guardRight;
     public BufferedImage dying1,dying2,dying3;
     public int spriteCounter = 0;
-    public int spriteNum =1;
+    public int spriteNum = 1;
     public BufferedImage image, image1, image2;
     public Entity linkedEntity;
 
@@ -73,6 +73,9 @@ public class Entity {
     public String Dialogues[][] = new String[20][20];
     public int dialogueIndex = 0;
     public int dialogueSet = 0;
+    public String QuestDialogues[][] = new String[20][20];
+    public int questDialogueIndex = 0;
+    public int questDialogueSet = 0;
 
     
 
@@ -188,10 +191,11 @@ public class Entity {
 
         }
     }
-    public void startDialogue(Entity entity, int setNum){
+    public void startDialogue(Entity entity, int setNum, boolean isQuest){
         gp.UI.npc = entity;
         dialogueSet = setNum;
         gp.gameState = GamePanel.dialogueState;
+        gp.UI.isQuest = isQuest;
     }
     public void interact(){}
     public boolean use(Entity entity) {

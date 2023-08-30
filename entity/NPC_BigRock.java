@@ -44,7 +44,7 @@ public class NPC_BigRock extends Entity{
     }
     public void talk() {
        facePlayer();
-       startDialogue(this, dialogueSet);
+       startDialogue(this, dialogueSet, false);
 
        dialogueSet++;
 

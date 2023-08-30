@@ -5,8 +5,11 @@ import main.GamePanel;
 import main.KeyHandler;
 import object.OBJ_Bomb;
 import object.OBJ_IronSword;
-import object.OBJ_Key;
 import object.OBJ_WoodShield;
+import quests.OM_QuestOne;
+import quests.OM_QuestTwo;
+import quests.Quest;
+import quests.Ruebs_QuestOne;
 
 import java.awt.AlphaComposite;
 import java.awt.Graphics2D;
@@ -31,6 +34,9 @@ public class Player extends Entity {
 
     int previousNPCX = -1;
     int previousNPCY = -1;
+
+    public Quest currentQuest = gp.QHandler.quests[0];
+
 
     public Player(GamePanel gp, KeyHandler KeyH){
      super(gp);
@@ -65,13 +71,13 @@ public class Player extends Entity {
         maxLife = 6;
         life = maxLife;
 
-        ammo = 10;
+        ammo = 0;
         level = 1;
         strength = 1;
         dexterity = 1;
         exp = 0;
         nextLevelExp = 10;
-        coin = 50;
+        coin = 0;
         currentWeapon = new OBJ_IronSword(gp);
         currentShield = new OBJ_WoodShield(gp);
         currentLight = null;
@@ -104,7 +110,14 @@ public class Player extends Entity {
       defense = getDefense();
       inventory.add(currentWeapon);
       inventory.add(currentShield);
-      inventory.add(new OBJ_Key(gp));
+    }
+    public int searchInventory(String name){
+         int index = 999;
+         for (int i = 0; i < inventory.size(); i++) {
+            if (inventory.get(i).name == name) 
+                return index = i;
+         }
+         return index; 
     }
 
     public int getAttack(){
@@ -175,6 +188,12 @@ public class Player extends Entity {
         return -1;
     }
     public void update(){
+        if (currentQuest != null){
+        currentQuest.update();
+
+        if (currentQuest.checkIfQuestComplete()) 
+            currentQuest = null;
+        }
         if(!gp.KeyH.spacePressed)
         guarding = false;
         if (knockedBack) {
@@ -405,23 +424,37 @@ public class Player extends Entity {
             if (gp.monster[gp.currentMap][index].life<= 0 ) {
                 gp.monster[gp.currentMap][index].dying = true;
                 exp += gp.monster[gp.currentMap][index].exp;
+
+                if (currentQuest!= null){
+                if(currentQuest.QuestName == OM_QuestOne.QUEST_NAME &&
+                gp.monster[gp.currentMap][index].name == "Green Chuchu") 
+                currentQuest.incrementCounter(); 
+                if (currentQuest.QuestName == Ruebs_QuestOne.QUEST_NAME &&
+                gp.monster[gp.currentMap][index].name == "Moblin") {
+                currentQuest.incrementCounter();     
+                }
+                }   
+                
                 checkLevelUp();
             }
         }
        }
     }
     public void damageInteractiveTile(int index) {
-        // if (index != 999 && gp.iTile[gp.currentMap][index].destructible && gp.iTile[gp.currentMap][index].isCorrectItem(this)) {
-        //     generateParticle(gp.iTile[gp.currentMap][index], gp.iTile[gp.currentMap][index]);
-        //     gp.iTile[gp.currentMap][index].playSE();
-        //     gp.iTile[gp.currentMap][index] = gp.iTile[gp.currentMap][index].getDestroyedForm();
-        //     gp.iTile[gp.currentMap][index].checkDrop();
-            
-        // }
+        if (index != 999 && gp.iTile[gp.currentMap][index].destructible && gp.iTile[gp.currentMap][index].isCorrectItem(this)) {
+            generateParticle(gp.iTile[gp.currentMap][index], gp.iTile[gp.currentMap][index]);
+            gp.iTile[gp.currentMap][index].playSE();
+            gp.iTile[gp.currentMap][index] = gp.iTile[gp.currentMap][index].getDestroyedForm();
+            gp.iTile[gp.currentMap][index].checkDrop();  
+        }
     }
 
     public void checkLevelUp() {
         if (exp>=nextLevelExp) {
+            if (currentQuest!=null && currentQuest.QuestName == OM_QuestTwo.QUEST_NAME &&
+            currentQuest.currentObjective == currentQuest.Objectives[2]) 
+                currentQuest.NextObjective();
+            
             level++;
             nextLevelExp = nextLevelExp *3;
             maxLife+= 2;
@@ -433,7 +466,7 @@ public class Player extends Entity {
             gp.gameState = GamePanel.dialogueState;
             exp = 0;
             setDialogue();
-            startDialogue(this, 0);
+            startDialogue(this, 0,false);
 
         }
     }

@@ -9,6 +9,10 @@ import java.io.ObjectOutputStream;
 
 
 import main.GamePanel;
+import quests.OM_QuestOne;
+import quests.OM_QuestTwo;
+import quests.Ruebs_QuestOne;
+import quests.TR_QuestOne;
 
 public class SaveLoad {
     GamePanel gp;
@@ -33,6 +37,7 @@ public class SaveLoad {
         ds.coin = gp.player.coin;
         ds.exp = gp.player.exp;
         ds.nextLevelExp = gp.player.nextLevelExp;
+
 
 
         //PLAYER INVENTORY
@@ -65,6 +70,25 @@ public class SaveLoad {
             }
           }
         }
+
+        //PLAYER PROGRESS
+        ds.OM_QuestOneComplete = Progress.OM_QuestOneComplete;
+        ds.OM_QuestTwoComplete = Progress.OM_QuestTwoComplete;
+        ds.Ruebs_QuestOneComplete = Progress.Ruebs_QuestOneComplete;
+        ds.TR_QuestOneComplete = Progress.TR_QuestOneComplete;
+        ds.SLDEAD = Progress.SLDEAD;
+
+        if (gp.player.currentQuest!=null) {
+            ds.CurrentQuestName = gp.player.currentQuest.QuestName;
+            for (int i = 0; i < gp.player.currentQuest.Objectives.length; i++) {
+                if (gp.player.currentQuest.Objectives[i]!=null) 
+                    ds.ObjectivesComplete[i] = gp.player.currentQuest.Objectives[i].ObjectiveComplete;
+            }
+        }else{
+          ds.CurrentQuestName = "NA";
+        }
+
+
 
         //write the data
         oos.writeObject(ds);
@@ -123,7 +147,30 @@ public class SaveLoad {
                 }
               }
             }
+
+            //PLAYER PROGRESS
+            OM_QuestOne.QuestComplete = Progress.OM_QuestOneComplete = ds.OM_QuestOneComplete ;
+            OM_QuestTwo.QuestComplete = Progress.OM_QuestTwoComplete = ds.OM_QuestTwoComplete;
+            Ruebs_QuestOne.QuestComplete = Progress.Ruebs_QuestOneComplete = ds.Ruebs_QuestOneComplete;
+            TR_QuestOne.QuestComplete = Progress.TR_QuestOneComplete = ds.TR_QuestOneComplete;
+            Progress.SLDEAD = ds.SLDEAD;
+
+            gp.player.currentQuest = gp.QHandler.findQuest(ds.CurrentQuestName);
+
+            if (gp.player.currentQuest!=null) {
+             for (int i = 0; i < gp.player.currentQuest.Objectives.length; i++) {
+                 if (gp.player.currentQuest.Objectives[i]!= null) {
+                  if (!ds.ObjectivesComplete[i]) 
+                    gp.player.currentQuest.currentObjective = gp.player.currentQuest.Objectives[i];
+                  else
+                     gp.player.currentQuest.Objectives[i].ObjectiveComplete = ds.ObjectivesComplete[i];
+                 }
+             }
+            }
+            gp.aPlacer.setQuestNPC();
+            gp.aPlacer.setMonster();
         } catch (Exception e) {
+          e.printStackTrace();
           System.out.println(e);
             System.out.println("Load Exception");
         }

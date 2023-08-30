@@ -26,6 +26,7 @@ public class UI {
     public String message = "";
     int messageCounter = 0;
     public boolean gameFinished = false;
+    public boolean isQuest = false;
 
     BufferedImage fullHeart,halfHeart,emptyHeart,bombImage,coin;
 
@@ -38,6 +39,7 @@ public class UI {
     public int npcSlotRow = 0;
     int subState = 0;
     int counter = 0;
+    int cnt = 0;
     public Entity npc;
     int charIndex = 0;
     String combinedText = "";
@@ -78,6 +80,7 @@ public class UI {
         if (gp.gameState == GamePanel.playState) {
             drawPlayerLife();
             drawBombAmmo(gp.player.ammo);
+            drawQuestInfo();
         }else if(gp.gameState == GamePanel.pauseState){
           drawPauseScreen();
           drawPlayerLife();
@@ -126,6 +129,25 @@ public class UI {
             x += GamePanel.TileSize;
         }
 
+    }
+    public void drawQuestInfo(){
+        int x = GamePanel.TileSize/2;
+        int y = 2* GamePanel.TileSize;
+
+
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD,25F));
+        g2.drawString("CURRENT OBJECTIVE", x, y);
+
+        y += GamePanel.TileSize/2;
+
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD,28F));
+        g2.setColor(Color.YELLOW);
+
+        if (gp.player.currentQuest !=null) 
+            g2.drawString(gp.player.currentQuest.currentObjective.ObjectiveName, x, y);
+        else
+            g2.drawString("No current objective.", x, y);
+        
     }
     public void drawTitleScreen() {
 
@@ -194,12 +216,15 @@ public class UI {
         x += GamePanel.TileSize;
         y += GamePanel.TileSize;
 
+        if (isQuest) 
+            drawQuestDialogue(x, y, width, height);
+        else{
         if (npc.Dialogues[npc.dialogueSet][npc.dialogueIndex] != null){
             // currentDialogue = npc.Dialogues[npc.dialogueSet][npc.dialogueIndex];
             char characters[] = npc.Dialogues[npc.dialogueSet][npc.dialogueIndex].toCharArray();
 
             if (charIndex < characters.length) {
-                gp.playSoundEffect(15);
+                if(charIndex % 2 == 0)gp.playSoundEffect(15);
                 String s = String.valueOf(characters[charIndex]);
                 combinedText+=s;
                 currentDialogue = combinedText;
@@ -227,8 +252,46 @@ public class UI {
             g2.drawString(line, x, y); 
             y+=40;
         }
+    }
         
     }
+    public void drawQuestDialogue(int x, int y, int width, int height){
+        if (npc.QuestDialogues[npc.questDialogueSet][npc.questDialogueIndex] != null){
+            // currentDialogue = npc.Dialogues[npc.dialogueSet][npc.dialogueIndex];
+            char characters[] = npc.QuestDialogues[npc.questDialogueSet][npc.questDialogueIndex].toCharArray();
+
+            if (charIndex < characters.length) {
+                if(charIndex % 2 == 0)gp.playSoundEffect(15);
+                String s = String.valueOf(characters[charIndex]);
+                combinedText+=s;
+                currentDialogue = combinedText;
+                charIndex++;
+            }
+
+            if (gp.KeyH.enterPressed && gp.gameState == GamePanel.dialogueState) {
+                charIndex = 0;
+                combinedText = "";
+                npc.questDialogueIndex++;
+                gp.KeyH.enterPressed = false;
+            }
+        }else{
+            npc.questDialogueIndex = 0;
+            if (gp.gameState == GamePanel.dialogueState){
+               gp.gameState = GamePanel.playState;
+            // if (gp.player.currentQuest.currentObjective.ObjectiveComplete) 
+            //    gp.player.currentQuest.NextObjective();
+            }
+            
+        }
+
+
+        for (String line : currentDialogue.split("\n")) {
+
+            g2.drawString(line, x, y); 
+            y+=40;
+        }
+    }
+
     public void drawCharacterScreen(){
       //create frame
       final int frameX = GamePanel.TileSize *2 ;
@@ -569,7 +632,7 @@ public class UI {
           commandNumber = 0;
           combinedText = "";
           charIndex = 0;
-          npc.startDialogue(npc,1);
+          npc.startDialogue(npc,1,false);
         }
       }
 
@@ -617,7 +680,7 @@ public class UI {
                     subState = 0;
                     combinedText = "";
                     charIndex = 0;
-                    npc.startDialogue(npc,2);
+                    npc.startDialogue(npc,2,false);
                 }else{
                     if (gp.player.canObtainItem(npc.inventory.get(itemIndex))) 
                         gp.player.coin -= npc.inventory.get(itemIndex).price; 
@@ -625,7 +688,7 @@ public class UI {
                         subState = 0;
                         combinedText = "";
                         charIndex = 0;
-                        npc.startDialogue(npc,3);
+                        npc.startDialogue(npc,3,false);
                     }
                 }
             }
@@ -678,13 +741,13 @@ public class UI {
                     subState = 0;
                     combinedText = "";
                     charIndex = 0;
-                    npc.startDialogue(npc,4);
+                    npc.startDialogue(npc,4,false);
                 }else if(gp.player.inventory.get(itemIndex).price < 0){
                     commandNumber = 0;
                     subState = 0;
                     combinedText = "";
                     charIndex = 0;
-                    npc.startDialogue(npc,5);
+                    npc.startDialogue(npc,5,false);
                 }else{
                     if (gp.player.inventory.get(itemIndex).amount > 1) 
                      gp.player.inventory.get(itemIndex).amount--;

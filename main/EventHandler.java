@@ -2,6 +2,8 @@ package main;
 
 import data.Progress;
 import entity.Entity;
+import quests.OM_QuestTwo;
+import quests.TR_QuestOne;
 
 public class EventHandler {
     GamePanel gp;
@@ -93,9 +95,9 @@ public class EventHandler {
         else if (hit(3, 26, 41, "any")) 
             teleport(2,7,8,GamePanel.dungeonArea);//to first floor
 
-        else if (hit(3, 25, 27, "any")) 
+        else if (hit(3, 25, 27, "any"))
             SkeletonLordCutScene();
-        else if (hit(3, 25, 8, "any")) 
+        else if (hit(3, 25, 8, "any") && !TR_QuestOne.masterSwordObtained) 
             MasterSwordCutScene();
         else if (hit(3, 25, 7, "any")) 
             teleport(0,38,15,GamePanel.overWorldArea);//to outside
@@ -137,7 +139,7 @@ public class EventHandler {
 
     public void damagePit(int gameState) {
         gp.gameState = gameState;
-        eventMaster.startDialogue(eventMaster, 0);
+        eventMaster.startDialogue(eventMaster, 0,false);
         gp.player.life -= 1;
         canTouchEvent = false;
 
@@ -146,9 +148,13 @@ public class EventHandler {
 
     public void healingPool(int gameState) {
         if (gp.KeyH.enterPressed) {
+            if(gp.player.currentQuest != null && gp.player.currentQuest.QuestName == OM_QuestTwo.QUEST_NAME &&
+            gp.player.currentQuest.currentObjective == gp.player.currentQuest.Objectives[0])
+                 gp.player.currentQuest.NextObjective();
+            
             gp.gameState = gameState;
             gp.player.attackCanceled = true;
-            eventMaster.startDialogue(eventMaster, 1);
+            eventMaster.startDialogue(eventMaster, 1,false);
             gp.player.life = gp.player.maxLife;
             gp.playSoundEffect(2);
             gp.aPlacer.setMonster();
@@ -184,9 +190,14 @@ public class EventHandler {
             gp.gameState = GamePanel.cutSceneState;
             gp.CSManager.sceneNum = gp.CSManager.SkeletonLord;
             
+            if (gp.player.currentQuest.QuestName == TR_QuestOne.QUEST_NAME && gp.player.currentQuest.currentObjective == gp.player.currentQuest.Objectives[2]) 
+            gp.player.currentQuest.NextObjective();
           }
     }
     public void MasterSwordCutScene(){
+          if (gp.player.currentQuest.QuestName == TR_QuestOne.QUEST_NAME) 
+            gp.player.currentQuest.NextObjective();
+          TR_QuestOne.masterSwordObtained = true;
           gp.gameState = GamePanel.cutSceneState;
           gp.CSManager.sceneNum = gp.CSManager.MasterSword;
   }

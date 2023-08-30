@@ -31,6 +31,7 @@ public class EntityGenerator {
           case OBJ_GoldCoin.OBJ_NAME:obj = new OBJ_GoldCoin(gp); break;
           case OBJ_Heart.OBJ_NAME:obj = new OBJ_Heart(gp); break;
           case OBJ_DungeonMap.OBJ_NAME:obj = new OBJ_DungeonMap(gp); break;
+          case OBJ_Powder.OBJ_NAME:obj = new OBJ_Powder(gp); break;
         }
         return obj;
       }

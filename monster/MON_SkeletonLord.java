@@ -21,7 +21,7 @@ public class MON_SkeletonLord extends Entity {
         type = typeMonster;
         name = MON_NAME;
         speed = 1;
-        maxLife = 50;
+        maxLife = 35;
         life = maxLife;
         attack = 10;
         defense = 2;

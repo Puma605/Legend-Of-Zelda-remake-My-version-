@@ -4,6 +4,7 @@ import data.Progress;
 import entity.NPC_BigRock;
 import entity.NPC_OldMan;
 import entity.NPC_RuebsMerchant;
+import entity.NPC_Traveller;
 import interactiveTile.IT_DamagedWall;
 import interactiveTile.IT_DryTree;
 import interactiveTile.IT_MetalPlate;
@@ -21,16 +22,12 @@ public class AssetPlacer {
      this.gp = gp;
     }
     public void setObject(){
-        int mapNum = 0;
+       int mapNum = 0;
        int i = 0;
        gp.obj[mapNum][i] = new OBJ_Chest(gp);
-       gp.obj[mapNum][i].setLoot(new OBJ_HealthPotion(gp));
+       gp.obj[mapNum][i].setLoot(new OBJ_Powder(gp));
        gp.obj[mapNum][i].worldX = GamePanel.TileSize*38;
        gp.obj[mapNum][i].worldY = GamePanel.TileSize*7;
-       i++;
-       gp.obj[mapNum][i] = new OBJ_Lantern(gp);
-       gp.obj[mapNum][i].worldX = GamePanel.TileSize*23;
-       gp.obj[mapNum][i].worldY = GamePanel.TileSize*19;
        i++;
        gp.obj[mapNum][i] = new OBJ_Door(gp);
        gp.obj[mapNum][i].worldX = GamePanel.TileSize*17;
@@ -78,8 +75,8 @@ public class AssetPlacer {
 
        gp.obj[mapNum][i] = new OBJ_Chest(gp);
        gp.obj[mapNum][i].setLoot(new OBJ_BlueShield(gp));
-       gp.obj[mapNum][i].worldX = GamePanel.TileSize*27;//asdasd
-       gp.obj[mapNum][i].worldY = GamePanel.TileSize*15;//sasd
+       gp.obj[mapNum][i].worldX = GamePanel.TileSize*27;
+       gp.obj[mapNum][i].worldY = GamePanel.TileSize*15;
        i++;
        gp.obj[mapNum][i] = new OBJ_IronDoor(gp);
        gp.obj[mapNum][i].worldX = GamePanel.TileSize*18;
@@ -102,7 +99,14 @@ public class AssetPlacer {
        i++;
 
     }
+    public void setQuestNPC(){
 
+        if (Progress.OM_QuestTwoComplete) { 
+        gp.npc[0][9] = new NPC_Traveller(gp);
+        gp.npc[0][9].worldX = GamePanel.TileSize*39;
+        gp.npc[0][9].worldY = GamePanel.TileSize*40;
+        }
+    }
     public void setNpc() {
         int i = 0;
         int mapNum = 0;
@@ -110,12 +114,16 @@ public class AssetPlacer {
         gp.npc[mapNum][i].worldX = GamePanel.TileSize*21;
         gp.npc[mapNum][i].worldY = GamePanel.TileSize*21;
 
+        
+
         mapNum = 1;
+        i = 0;
         gp.npc[mapNum][i] = new NPC_RuebsMerchant(gp);
         gp.npc[mapNum][i].worldX = GamePanel.TileSize*11;
         gp.npc[mapNum][i].worldY = GamePanel.TileSize*4;
 
         mapNum = 2;
+        i = 0;
         gp.npc[mapNum][i] = new NPC_BigRock(gp);
         gp.npc[mapNum][i].worldX = GamePanel.TileSize*20;
         gp.npc[mapNum][i].worldY = GamePanel.TileSize*25;
@@ -138,7 +146,11 @@ public class AssetPlacer {
         gp.monster[mapNum][i].worldY = GamePanel.TileSize*38;
 
         i++;
+        if (Progress.OM_QuestTwoComplete) 
+        gp.monster[mapNum][i] = new MON_RedChuchu(gp);  
+        else
         gp.monster[mapNum][i] = new MON_GreenChuchu(gp);
+
         gp.monster[mapNum][i].worldX = GamePanel.TileSize*23;
         gp.monster[mapNum][i].worldY = GamePanel.TileSize*42;
 
@@ -153,12 +165,11 @@ public class AssetPlacer {
         gp.monster[mapNum][i].worldY = GamePanel.TileSize*42;
 
         i++;
-        gp.monster[mapNum][i] = new MON_RedChuchu(gp);
-        gp.monster[mapNum][i].worldX = GamePanel.TileSize*35;
-        gp.monster[mapNum][i].worldY = GamePanel.TileSize*42;
-
-        i++;
+        if (Progress.OM_QuestTwoComplete) 
+        gp.monster[mapNum][i] = new MON_RedChuchu(gp);  
+        else
         gp.monster[mapNum][i] = new MON_GreenChuchu(gp);
+        
         gp.monster[mapNum][i].worldX = GamePanel.TileSize*38;
         gp.monster[mapNum][i].worldY = GamePanel.TileSize*42;
 
@@ -192,7 +203,7 @@ public class AssetPlacer {
         i++;
         gp.monster[mapNum][i] = new MON_Moblin(gp);
         gp.monster[mapNum][i].worldX = GamePanel.TileSize*28;
-        gp.monster[mapNum][i].worldY = GamePanel.TileSize*15;
+        gp.monster[mapNum][i].worldY = GamePanel.TileSize*19;
         i++;
 
 

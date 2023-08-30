@@ -129,7 +129,7 @@ public class CutSceneManager {
         }
         if (scenePhase == 4) {
             gp.playSoundEffect(18);
-            gp.tileM.mapTileNum[3][25][7] = 88;//tile right infront of master sword
+            gp.tileM.mapTileNum[3][25][7] = 88;//tile right infront of master sword turned to stairs
             scenePhase++;
         }
         if (scenePhase == 5) {

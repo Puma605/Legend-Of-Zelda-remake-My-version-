@@ -16,6 +16,8 @@ import entity.Entity;
 import entity.Player;
 import enviroment.EnviromentManager;
 import interactiveTile.interactiveTile;
+import quests.QuestHandler;
+import quests.TR_QuestOne;
 import tile.Map;
 import tile.TileManager;
 
@@ -50,10 +52,12 @@ public class GamePanel extends JPanel implements Runnable {
     EnviromentManager eManager = new EnviromentManager(this);
     Map map = new Map(this);
     Config config = new Config(this);
+    public QuestHandler QHandler = new QuestHandler(this);
     SaveLoad saveLoad = new SaveLoad(this);
     Thread gameThread;
     public EntityGenerator EG = new EntityGenerator(this);
     CutSceneManager CSManager = new CutSceneManager(this);
+    
 
     //entity
     public Player player = new Player(this, KeyH);
@@ -104,6 +108,7 @@ public class GamePanel extends JPanel implements Runnable {
     public void setUpGame() {
         aPlacer.setObject();
         aPlacer.setNpc();
+        aPlacer.setQuestNPC();
         aPlacer.setMonster();
         aPlacer.setInteractiveTiles();
         eManager.setup();
@@ -118,6 +123,7 @@ public class GamePanel extends JPanel implements Runnable {
         player.setDefaultPositions();
         player.restoreStatus();
         aPlacer.setNpc();
+        aPlacer.setQuestNPC();
         aPlacer.setMonster();
 
         if (restart) {
@@ -327,8 +333,11 @@ public class GamePanel extends JPanel implements Runnable {
             if (nextArea == houseArea) 
                 playMusic(17);
             
-            if (nextArea == dungeonArea) 
+            if (nextArea == dungeonArea){
                 playMusic(16);
+                if (player.currentQuest != null && player.currentQuest.QuestName == TR_QuestOne.QUEST_NAME) 
+                    TR_QuestOne.enteredDungeon = true;
+            }
             
         }
         currentArea = nextArea;
